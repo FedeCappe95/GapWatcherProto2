@@ -2,12 +2,14 @@ package org.kkteam.gapwatcher;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.TimePickerDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import java.util.Calendar;
 
@@ -29,9 +31,22 @@ public class MainActivity extends AppCompatActivity {
         textViewOutput = findViewById(R.id.textViewOutput);
 
         Calendar rightNow = Calendar.getInstance();
-        int currentHourIn24Format = rightNow.get(Calendar.HOUR_OF_DAY);
-        int currentMin = rightNow.get(Calendar.MINUTE);
+        final int currentHourIn24Format = rightNow.get(Calendar.HOUR_OF_DAY);
+        final int currentMin = rightNow.get(Calendar.MINUTE);
         editTextHour.setText(currentHourIn24Format + "." + currentMin);
+
+        editTextHour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int hourOfDay, int minutes) {
+                        editTextHour.setText(hourOfDay + "." + minutes);
+                    }
+                }, currentHourIn24Format, currentMin, true);
+                timePickerDialog.show();
+            }
+        });
 
         buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
